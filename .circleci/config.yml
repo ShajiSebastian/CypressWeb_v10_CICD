@@ -23,5 +23,5 @@ orbs:
 workflows:
   build:
     jobs:
-      - cypress/run:
-      yarn: true
+      - npm install
+      - npx cypress run
