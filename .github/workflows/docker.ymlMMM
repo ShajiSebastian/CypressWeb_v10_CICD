@@ -15,5 +15,5 @@ jobs:
         uses: cypress-io/github-action@v4
         timeout-minutes: 10
         with:
-          browser: chrome # electron # browser should be present in our system
+          browser: chrome # electron. browser should be present in our system
           # headless: true # headless mode  

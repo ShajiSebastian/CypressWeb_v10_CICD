@@ -3,11 +3,10 @@ name: Artifacts
 on: push # all kind of actions
 
 jobs:
-  example-job:
+  aratifacts:
     name: working on artifacts
     runs-on: ubuntu-latest
     steps:
-
     # The below script generates, uploads and downloads three files.
       - shell: bash 
         run: |
@@ -53,14 +52,12 @@ jobs:
           name: output-log-file # file name should be same as we given in upload
           path: some/new/path # path is optional. If didnt mention it will downlaod default path. If mentioned, deafult/some/new/path
       
-   
       - name: Download file output.log to new path
         uses: actions/download-artifact@v3
         with:
           name: output-log-file # file name should be same as we given in upload
           path: ~/some/path/with/a/tilde   # download path /home/runner/some/path/with/a/tilde
 
-      
       - name: Download all Artifacts # if we dont mention name then it will download all uploaded artifacts
         uses: actions/download-artifact@v3
         with:
@@ -72,7 +69,7 @@ jobs:
           path: some/**/path # wild cards in the path. wildcard is actually useful while uploading
       
 
-     # The below script takes screenshot and uploads
+     # The below script takes screenshot and uploads for cypress test execution
       - name: Checkout
         uses: actions/checkout@v3
       - name: Take screenshot
@@ -89,7 +86,7 @@ jobs:
           name: screen.jpg
           path: /tmp/screen.jpg
 
-      - name: Running cyress scripts
+      - name: Running cypress scripts
         uses: actions/checkout@v3
       - run: npm ci # same as npm install
       - run: npx cypress run 
