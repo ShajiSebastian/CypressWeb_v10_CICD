@@ -1,0 +1,53 @@
+# actions/checkout will actually checkout the head of our PR and then automatically merge it against the base this PR is against 
+# so if we open a PR against master, actions/checkout will checkout our branch, then merge it against master for us
+
+# By default, the jobs in your workflow all run in parallel at the same time. If you have a job that must only run after another job has completed, 
+# you can use the needs keyword to create this dependency. If one of the jobs fails, all dependent jobs are skipped; 
+# however, if you need the jobs to continue, you can define this using the if conditional statement.
+# In this example, the setup, build, and test jobs run in series, with build and test being dependent on the successful completion of the job that precedes them:#
+
+name: My own script2
+on: push # all kind of actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3 
+
+   #   - name: Set committer info
+   #     run: |
+   #       git config --local user.email "$(git log --format='%ae' HEAD^!)"
+   #       git config --local user.name "$(git log --format='%an' HEAD^!)"
+
+  test:
+    needs: build # runs only when build job completes successfully
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git clone https://github.com/ShajiSebastian/CypressWeb_v10_CICD.git
+          npm install
+          npx cypress run
+    
+    #  steps:
+    #   - name: checkout
+    #     uses: actions/checkout@v3
+    #   - name: running Script
+    #     run: npm ci # same as npm install
+    #     run: npx cypress run 
+
+  result:
+    # if: ${{ always() }} # always runs when the test job completes successfully or unsuccessfully
+    needs: test # runs only when test job completes successfully
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "series of job executed successfully"
+          echo "We can give any commands here"
+          echo $RUNNER_WORKSPACE
+          pwd
+          ls -lrt
+          java --version
+          whoami
+          env
